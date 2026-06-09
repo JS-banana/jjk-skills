@@ -1,8 +1,8 @@
-# Context File Writer - Detailed Reference
+# Writer Context MD - Detailed Reference
 
 > **Design Philosophy**: This skill uses "principle-driven" approach, not "template-driven".
 > The six essential sections are guidelines, not rigid templates.
-> Examples in `examples/` directory are for learning purposes only — generate your AGENTS.md based on principles, not by copying templates.
+> Generate your AGENTS.md based on principles, not by copying templates.
 
 ## Research Data
 
@@ -364,16 +364,6 @@ Only add durable, generalizable lessons. Don't add bug-specific notes.
 1. Still accurate?
 2. Still being followed?
 3. Missing anything causing AI mistakes?
-
-## Project Type Templates
-
-See `templates/` directory:
-- `minimal.md` — Smallest viable file
-- `frontend.md` — React/Vue/Angular
-- `backend.md` — API/server
-- `monorepo.md` — Multi-package repos
-- `cli.md` — Command-line tools
-- `library.md` — SDK/package projects
 
 ## References
 
