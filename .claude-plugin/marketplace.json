@@ -9,14 +9,9 @@
   },
   "plugins": [
     {
-      "name": "context-file-writer",
-      "source": "./plugins/context-file-writer",
-      "description": "Create and maintain AGENTS.md/CLAUDE.md files for AI agent context"
-    },
-    {
-      "name": "readme-generator",
-      "source": "./plugins/readme-generator",
-      "description": "Generate high-quality README files"
+      "name": "jkk",
+      "source": "./plugins/jkk",
+      "description": "Collection of writing skills for documentation and context files"
     }
   ]
 }

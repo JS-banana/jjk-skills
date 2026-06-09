@@ -1,0 +1,13 @@
+{
+  "name": "jkk",
+  "description": "Collection of writing skills for documentation and context files",
+  "version": "1.0.0",
+  "author": {
+    "name": "Sunss"
+  },
+  "keywords": ["writing", "documentation", "context", "readme"],
+  "skills": [
+    "./skills/writer-context-md",
+    "./skills/writer-readme-md"
+  ]
+}
