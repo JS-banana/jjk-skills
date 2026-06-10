@@ -1,210 +1,83 @@
 ---
 name: writer-readme-md
 description: >
-  Generate high-quality README files for GitHub projects. Use this skill when
-  the user mentions "README", "project documentation", "generate readme",
-  "write readme", "readme template", or wants to create or improve their
-  project's README file. This skill analyzes the project structure, identifies
-  the project type, and generates a customized README with quality scoring.
-  Trigger on: /writer-readme-md, "帮我写 README", "生成项目文档", "README 太烂了",
-  "write project docs", "create readme".
+  Use when the user wants to create, rewrite, audit, or improve a project
+  README.md, GitHub README, project documentation landing page, README
+  or bilingual README. Trigger on README requests, "帮我写 README",
+  "生成项目文档", "README 太烂了", "write project docs", or
+  /writer-readme-md.
 ---
 
-# Writer Readme MD
+# Writer README MD
 
-## Overview
+Create README files that are grounded in local project evidence. Treat the
+README as the project's front door: it should explain what the project is, how
+to try it, and what claims are actually supported by the repository.
 
-This skill generates high-quality, project-specific README files by:
-1. Analyzing the project structure and tech stack
-2. Selecting the appropriate template pattern
-3. Generating content following best practices
-4. Scoring the output quality
-5. Presenting for user review before writing
+## Load Rules
 
-## When to Use
+- For create, rewrite, or deep review tasks, read `references/method.md` and
+  `references/review-rubric.md` before drafting.
+- After scanning the repository, read `references/patterns.md` to choose the
+  README shape guidance and section priorities.
+- Read `references/badges.md` only when adding or reviewing badges.
+- Read `references/examples.md` only after choosing the target shape.
+- For tiny edits under 10 lines, use this file and the existing README only
+  unless the edit affects structure, facts, badges, or generated examples.
 
-**Trigger on:**
-- User explicitly calls `/writer-readme-md`
-- User says "帮我写 README" / "generate readme" / "write project docs"
-- User wants to improve or rewrite existing README
-- New project needs documentation
+## Source Of Truth
 
-**Do NOT trigger when:**
-- User wants to edit a small section of existing README
-- User asks about API documentation only
-- User is discussing README concepts without intent to generate
+Before writing new content, inspect the existing README, manifests
+(`package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, etc.), scripts, CI
+files, docs, license files, assets, and source entry points.
+
+Only document facts found locally or explicitly stated by the user. Do not
+invent install methods, commands, badges, publish status, screenshots, support
+channels, metrics, roadmap, or configuration options. If a fact is unknown,
+omit it, mark it as not documented in the review report, or ask.
 
 ## Workflow
 
-### Step 1: Project Analysis
+1. Clarify scope if needed: create, rewrite, audit, small edit, language, and
+   whether writing the file is already authorized.
+2. Build a fact map: project name, purpose, audience, install path, usage path,
+   configuration, tests, license, visuals, and release/distribution status.
+3. Choose section priorities with `references/patterns.md`; compose the README
+   from project evidence instead of filling a fixed template.
+4. Draft from evidence: five-second value proposition, quick start, runnable
+   usage, configuration if real, and only sections that have local backing.
+5. Review with `references/review-rubric.md`. When a README file or draft path
+   exists, run `python3 scripts/validate.py --readme <path>` if possible.
+6. Present preview, score, assumptions, and unsupported/missing facts. Wait for
+   user confirmation before writing a new or fully rewritten README unless the
+   user explicitly asked for direct edits.
 
-Analyze the project to understand its characteristics. Read these files:
-- `package.json` (if exists) - for dependencies, scripts, project metadata
-- Existing `README.md` (if exists) - to understand current state
-- Source code structure - to identify patterns
+## Output Modes
 
-Determine:
-1. **Project type**: CLI tool, library, web app, web service, mobile app, desktop app, monorepo, etc.
-2. **Tech stack**: Language, framework, build tool, test framework
-3. **Project scale**: Personal tool, team project, open source library
+- **Create/rewrite**: README preview, score report, assumptions, and write gate.
+- **Audit/review**: findings first with file/line references, score, and focused
+  recommendations; do not rewrite unless requested.
+- **Direct edit**: apply the smallest patch that satisfies the request, then
+  report changed sections and validation results.
 
-Use the analysis rules in `references/project-patterns.md`.
+## README Rules
 
-### Step 2: Select Template Pattern
+- The first screen must answer: project name, what it does, who it helps, and
+  the fastest credible way to try it.
+- Installation and usage commands must be copy-pasteable and traceable to local
+  files or user-provided facts.
+- Badges require evidence; prefer no badge over a fabricated badge.
+- Use screenshots, demos, or generated assets only when the files exist or the
+  user asks to create them.
+- Match the repository's existing language. Generate bilingual READMEs only when
+  requested or when bilingual docs already exist.
+- Preserve accurate existing content when improving a README. Rewrite only when
+  the structure is broken or the user asks for a rewrite.
 
-**Content Pattern** (based on project type):
+## Completion Checklist
 
-| Project Type | Pattern | Example |
-|--------------|---------|---------|
-| Mature library with docs site | Minimal Facade | React, Prettier |
-| CLI tool | Complete Manual | bat |
-| Framework | Standard Framework | Express |
-| Personal/practical tool | Operation Manual | proxy_pool |
-
-**Visual Style**: Always use **Brand-Focused** style (centered header with logo, title, description, and badges).
-
-Read the selected content pattern and `assets/templates/brand-focused.md` for the visual style.
-
-### Step 3: Generate README
-
-Generate the README following these principles (from `references/writing-principles.md`):
-
-**Visual Style (Brand-Focused):**
-```html
-<div align="center">
-  <img src="./logo.svg" width="120" alt="Project Name" />  <!-- if logo exists -->
-  <h1>Project Name</h1>
-  <p><b>One-line description</b></p>
-  [Badges]
-</div>
-
-<br/>
-```
-
-**Core Structure:**
-1. Centered header (logo + title + description + badges)
-2. Features / Key capabilities
-3. Quick Start (3 steps or less)
-4. Installation (detailed)
-5. Usage examples (with code)
-6. Configuration (if applicable)
-7. Contributing
-8. License
-
-**Writing Rules:**
-- 5-Second Rule: Reader must understand "what is this" in 5 seconds
-- Value First: Show what it does before how to install
-- Code is Documentation: Include at least one runnable example
-- Assume Newbie: Write for someone who knows nothing about your project
-- Progressive Depth: Simple → Advanced
-
-**Language:**
-- If project has Chinese content → generate Chinese README
-- If project is English → generate English README
-- Support bilingual with language switcher if requested
-
-### Step 4: Quality Scoring
-
-Score the generated README using the rubric in `references/scoring-rubric.md`.
-
-**5 Dimensions (100 points total):**
-- Content Completeness: 30 points
-- Structure Organization: 20 points
-- Visual Presentation: 15 points
-- Readability & Language: 20 points
-- Maintenance & Reliability: 15 points
-
-**Grade Scale:**
-- S (90-100): Excellent, can serve as template
-- A (80-89): High quality, minor improvements possible
-- B (70-79): Good, some dimensions need strengthening
-- C (60-69): Acceptable, multiple improvements needed
-- D (50-59): Deficient, significant rewrite needed
-- F (<50): Inadequate, needs complete rewrite
-
-Generate the score report in the format specified in `references/scoring-rubric.md`.
-
-### Step 5: Preview & Confirm
-
-Present to the user:
-1. Generated README content (in a code block)
-2. Quality score report
-3. Improvement suggestions (if any)
-
-**Wait for user confirmation** before writing to file.
-
-If user requests changes:
-- Regenerate the affected section
-- Re-score if changes are significant
-- Present updated version
-
-## Output Format
-
-### README File
-Write to `README.md` in the project root.
-
-### Score Report
-Display in chat with the README preview.
-
-### Bilingual Support
-If bilingual requested:
-- `README.md` - English version
-- `README.zh-CN.md` - Chinese version
-- Add language switcher badges at top
-
-## Reference Files
-
-Read these files as needed during execution:
-
-- `references/project-patterns.md` - Project type identification rules
-- `references/writing-principles.md` - Writing best practices
-- `references/scoring-rubric.md` - Quality scoring criteria
-- `references/README-anatomy.md` - README structure analysis
-- `references/badge-catalog.md` - Common badges reference
-- `assets/templates/brand-focused.md` - Default visual style (centered header)
-
-## Examples
-
-### Example 1: CLI Tool
-
-User: "帮我给这个 CLI 工具写个 README"
-
-1. Analyze: Check package.json for `bin` field, check src/ for CLI entry point
-2. Pattern: Select "Complete Manual" content pattern
-3. Style: Apply Brand-Focused visual style (centered header)
-4. Generate: Include installation table, usage examples, configuration, troubleshooting
-5. Score: Check for installation completeness, usage examples, cross-platform support
-
-### Example 2: Library
-
-User: "这个库需要一个 README"
-
-1. Analyze: Check package.json for `main`/`exports`, check for API docs
-2. Pattern: Select "Minimal Facade" if docs site exists, "Standard Framework" otherwise
-3. Style: Apply Brand-Focused visual style (centered header)
-4. Generate: Include API overview, quick start, examples, TypeScript support
-5. Score: Check for API documentation, code examples, installation clarity
-
-### Example 3: Personal Tool
-
-User: "新项目，写个文档"
-
-1. Analyze: Check project structure, identify practical use case
-2. Pattern: Select "Operation Manual" content pattern
-3. Style: Apply Brand-Focused visual style (centered header)
-4. Generate: Focus on quick start, practical usage, minimal theory
-5. Score: Check for clarity, actionability, Docker support
-
-## Integration with Other Skills
-
-This skill can work with:
-- `dev-stats` - For generating stats cards in README
-- `api-docs` - For linking to API documentation
-- `changelog` - For version history references
-
-## Notes
-
-- Always respect existing README content if user wants to improve rather than replace
-- For open source projects, include contributing guidelines
-- For personal projects, keep it practical and concise
-- When in doubt, ask the user about their preferences
+- [ ] No placeholders, sample owner/repo names, or copied example project facts.
+- [ ] Every command, badge, link, image, API, and config option has evidence.
+- [ ] Relative links and images resolve, or unresolved items are reported.
+- [ ] README shape matches project type and audience.
+- [ ] Review rubric result and validation output are included in the response.

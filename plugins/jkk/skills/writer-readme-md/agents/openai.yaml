@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writer README MD"
+  short_description: "Create and review project README files"
+  default_prompt: "Use $writer-readme-md to audit or draft this repository's README."
