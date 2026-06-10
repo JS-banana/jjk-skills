@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writer Context MD"
+  short_description: "Create and review agent context files"
+  default_prompt: "Use $writer-context-md to review this repository's agent context instructions."

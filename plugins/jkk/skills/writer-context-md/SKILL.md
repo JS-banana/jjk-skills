@@ -1,101 +1,106 @@
 ---
 name: writer-context-md
-description: Create and maintain high-quality AGENTS.md/CLAUDE.md files for AI agent context. Use when user wants to create, optimize, or update project context files for Claude Code, Codex, Cursor, Copilot, or other AI coding tools.
+description: >
+  Create, audit, and maintain agent context files such as AGENTS.md, CLAUDE.md,
+  GEMINI.md, Cursor rules, Copilot instructions, and repo-level AI coding
+  guidance. Use when the user asks to create, optimize, review, consolidate,
+  split, or update persistent instructions for Codex, Claude Code, Cursor,
+  GitHub Copilot, or other coding agents; when AGENTS.md/CLAUDE.md is too long,
+  stale, vague, or causing repeated agent mistakes.
 ---
 
 # Writer Context MD
 
-Create and maintain high-quality AGENTS.md/CLAUDE.md files for AI agent context.
+Create high-signal persistent context for coding agents. Optimize for minimal,
+non-inferable guidance: exact commands, unusual decisions, boundaries, and
+verification rules that the agent cannot cheaply discover.
 
-## Core Principle
+## Load Rules
 
-**Less is more.** Target < 300 lines. Use progressive disclosure — details in separate files.
+- For create, rewrite, consolidation, or deep review tasks, read
+  `references/method.md` and `references/review-rubric.md` before drafting.
+- For evidence-backed claims or research rationale, read
+  `references/evidence.md`; do not rely on external websites unless the user
+  asks to refresh sources.
+- For examples, read `references/examples.md` only after choosing the target
+  shape.
+- For tiny edits under 10 lines, use this file only unless the task involves
+  research claims or structural changes.
 
-## Workflows
+## Operating Principles
 
-### 1. New Project Creation
+1. Treat existing project docs, package scripts, test config, CI files, and
+   current AGENTS.md/CLAUDE.md files as source of truth.
+2. Write durable operating instructions, not human-facing project docs.
+3. Prefer pointers to canonical docs and scripts over copied summaries.
+4. Keep root context short; use nested files when scope differs by directory.
+5. Ask when policy or permission boundaries are ambiguous.
+6. Remove stale, redundant, vague, and unenforceable rules.
 
-Ask user:
-1. Tech stack and versions
-2. Project type (frontend/backend/monorepo/CLI/library)
-3. Key commands (install, dev, build, test, lint)
-4. Non-obvious patterns or conventions
+## Workflow
 
-Generate file based on six essential sections. Explain each section's purpose.
+### Create New Context
 
-### 2. Existing File Optimization
+1. Inspect root docs, manifests, CI, test config, and existing agent files.
+2. Identify non-inferable facts: custom commands, unusual toolchain choices,
+   counterintuitive patterns, dangerous operations, and verification gates.
+3. Draft a concise root file using the method reference; add nested files only
+   when directory scope changes.
+4. Cite the local files that informed commands and boundaries.
+5. Run the review rubric and revise until no critical issue remains.
 
-Analyze current file for common problems:
-- Too long (> 300 lines)
-- Contains code style rules (use linter instead)
-- Contains directory listings (agent can discover)
-- Vague instructions ("be careful with X")
+### Review Existing Context
 
-Provide specific fixes with rationale.
+1. Read the context file and local source files needed to verify its claims.
+2. Score with `references/review-rubric.md`.
+3. Separate findings into incorrect or stale, vague, redundant, overbroad, and
+   missing high-value guidance.
+4. Propose surgical edits; avoid full rewrites unless the file is structurally
+   broken.
+5. Apply edits only when requested or clearly implied by the task.
 
-### 3. Periodic Update
+### Consolidate Multi-Tool Instructions
 
-Guide user through review checklist:
-- [ ] Still accurate? (commands, paths, versions)
-- [ ] Still relevant? (remove obsolete rules)
-- [ ] Missing anything? (AI recurring mistakes)
+1. Pick one canonical source, usually `AGENTS.md` for cross-tool repositories.
+2. Preserve separate tool files only for real syntax, scope, or product
+   differences.
+3. Prefer symlinks or short adapter files over parallel copies.
+4. Document precedence and restart requirements for the target tool.
 
-Use incremental updates, not full rewrites.
+### Update After Repeated Agent Mistakes
 
-### 4. Multi-Tool Unification
+1. Capture the exact mistake and why existing context failed.
+2. Add the narrowest durable rule that would have prevented it.
+3. Pair negative rules with the correct command, file pointer, or alternative.
+4. Remove obsolete adjacent rules if the new rule supersedes them.
 
-If team uses multiple AI tools:
-1. Use AGENTS.md as single source of truth
-2. Create symlinks: `ln -s AGENTS.md CLAUDE.md`
-3. Only add tool-specific files when needed
+## Default Sections
 
-## File Structure
+Use only sections that have real content:
 
-```
-project/
-├── AGENTS.md              # Main entry (100-150 lines)
-├── CLAUDE.md              # Symlink to AGENTS.md
-├── docs/
-│   ├── TESTING.md         # Detailed test rules
-│   └── CONVENTIONS.md     # Code conventions
-└── .claude/
-    └── rules/             # Path-scoped rules
-```
+- Stack: exact versions and non-standard tools.
+- Commands: install, dev, build, test, lint, typecheck, and single-test variants.
+- Non-Obvious Patterns: counterintuitive project rules and their mechanism.
+- Boundaries: Always / Ask First / Never.
+- Testing and Verification: concrete commands and completion gates.
+- Reference Map: links to deeper docs with when to read each.
 
-## Six Essential Sections
+## Anti-Patterns
 
-1. **Stack** — Tech + versions (one line)
-2. **Commands** — Install, dev, build, test, lint (put first!)
-3. **Non-Obvious Patterns** — Counter-intuitive decisions
-4. **Conventions** — Project-specific only
-5. **Boundaries** — Always / Ask First / Never
-6. **Testing** — Exact commands, not vague guidance
+- Auto-generated context committed without human pruning.
+- Directory listings the agent can discover.
+- Generic principles such as "be careful" or "follow best practices".
+- Style rules already enforced by formatter or linter.
+- Big architecture essays in root context.
+- Unverified commands or tool versions.
+- Negative-only rules without the correct alternative.
+- Parallel CLAUDE.md, Cursor, and Copilot instruction copies that drift.
 
-## Anti-Patterns to Detect
+## Output
 
-- Code style rules → use linter
-- Directory listings → agent discovers
-- "Follow best practices" → be specific
-- Contradicting priorities → number them
-- Auto-generated content → rewrite manually
+When drafting or reviewing, provide:
 
-## Quality Checklist
-
-Before finalizing:
-- [ ] < 300 lines total
-- [ ] Commands in first 20 lines
-- [ ] Every instruction executable/verifiable
-- [ ] No code style rules
-- [ ] Boundaries clearly defined
-- [ ] No outdated information
-
-## References
-
-- `REFERENCE.md` — Detailed guidance, research data, and best practices
-
-## Writing Style
-
-- Use imperative mood ("Run X", not "You should run X")
-- Be specific and verifiable
-- Code examples > prose descriptions
-- Negative rules paired with alternatives
+1. Proposed content or patch.
+2. Short rationale tied to local evidence.
+3. Review-rubric result.
+4. Assumptions, open questions, and any commands not verified.
