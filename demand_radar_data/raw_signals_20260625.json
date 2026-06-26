@@ -1,0 +1,32 @@
+{
+  "collected_at": "2026-06-25T00:42:00",
+  "total": 25,
+  "sources": {"Reddit": 10, "小红书": 5, "Product Hunt": 5, "Hacker News": 4, "V2EX": 0, "Twitter": 0},
+  "notes": "V2EX网络不通，Twitter CLI不可用",
+  "signals": [
+    {"platform": "Reddit", "title": "SaaS subscription fatigue: 12-person company spending $50K/yr on 23 tools", "score": 628, "subreddit": "r/SaaS", "snippet": "Small businesses drowning in subscription sprawl, need tool consolidation", "url": "https://reddit.com/r/SaaS"},
+    {"platform": "Reddit", "title": "No aggregator of real customer pain points by industry", "score": 36, "subreddit": "r/Entrepreneur", "snippet": "Entrepreneurs can't find validated problems to solve, need a pain point discovery tool", "url": "https://reddit.com/r/Entrepreneur"},
+    {"platform": "Reddit", "title": "Frustrations with no-code tools: simple features still break", "score": 14, "subreddit": "r/nocode", "snippet": "No-code tools can't handle simple features like drag-reorder in to-do apps", "url": "https://reddit.com/r/nocode"},
+    {"platform": "Reddit", "title": "Business analytics tools are just dashboards with no actionable guidance", "score": 10, "subreddit": "r/SaaS", "snippet": "Analytics tools show data but don't tell you what to do next", "url": "https://reddit.com/r/SaaS"},
+    {"platform": "Reddit", "title": "No-code tools can't handle drag-reorder in to-do apps", "score": 9, "subreddit": "r/webdev", "snippet": "Simple UX patterns break in no-code platforms", "url": "https://reddit.com/r/webdev"},
+    {"platform": "Reddit", "title": "Non-profit needs simple database/program management for non-tech users", "score": 5, "subreddit": "r/SideProject", "snippet": "Non-profit staff need easy relational data management without technical skills", "url": "https://reddit.com/r/SideProject"},
+    {"platform": "Reddit", "title": "Engineering performance tracking across teams is pure guesswork", "score": 3, "subreddit": "r/SaaS", "snippet": "No good way to track engineering performance across multiple teams", "url": "https://reddit.com/r/SaaS"},
+    {"platform": "Reddit", "title": "Reddit post tracker/lead scorer tool disappeared - demand for social listening SaaS", "score": 2, "subreddit": "r/SideProject", "snippet": "A Reddit monitoring tool went offline, users looking for replacement", "url": "https://reddit.com/r/SideProject"},
+    {"platform": "Reddit", "title": "Uptime monitoring + status page fragmentation across 3+ tools", "score": 0, "subreddit": "r/SaaS", "snippet": "Need unified uptime monitoring, alerting, and status page in one tool", "url": "https://reddit.com/r/SaaS"},
+    {"platform": "Reddit", "title": "AI model lock-in frustration with no-code AI platforms", "score": 4, "subreddit": "r/nocode", "snippet": "No-code AI platforms lock you into specific models, need flexibility", "url": "https://reddit.com/r/nocode"},
+    {"platform": "小红书", "title": "有没有哪种APP，真的很需要但没人做？", "score": 690, "snippet": "用户表达对未被满足的APP需求的强烈兴趣，690赞", "url": "https://www.xiaohongshu.com/search_result/69781bb7000000000903ae66"},
+    {"platform": "小红书", "title": "需要便宜稳定好用的websearch工具", "score": 122, "snippet": "明确表达对低成本稳定web搜索工具的需求，含价格敏感信号", "url": "https://www.xiaohongshu.com/search_result/6a2ec01100000000220186ab"},
+    {"platform": "小红书", "title": "盘一下最近在用的AI工具（评论区大量求推荐）", "score": 2689, "snippet": "2689赞，大量用户在评论区求推荐各类AI工具，间接表达需求缺口", "url": "https://www.xiaohongshu.com/search_result/69cc675c000000001a024dc9"},
+    {"platform": "小红书", "title": "求推荐小程序/应用(幻想时间到)", "score": 28, "snippet": "用户明确请求工具/应用推荐", "url": "https://www.xiaohongshu.com/search_result/69b9f8d10000000023017d6c"},
+    {"platform": "小红书", "title": "大家在家都用的什么梯子啊？", "score": 77, "snippet": "用户明确求推荐网络工具", "url": "https://www.xiaohongshu.com/search_result/68a53ba8000000001d01bfca"},
+    {"platform": "Product Hunt", "title": "Agentcard - order DoorDash from Claude", "score": 0, "snippet": "AI agent commerce: agents ordering services on behalf of users", "url": "https://www.producthunt.com/"},
+    {"platform": "Product Hunt", "title": "Stripe.Directory - agent-ready business search", "score": 0, "snippet": "Business directory optimized for AI agent discovery", "url": "https://www.producthunt.com/"},
+    {"platform": "Product Hunt", "title": "Propane - customer context for AI agents", "score": 0, "snippet": "Give your AI agents real customer context for better conversations", "url": "https://www.producthunt.com/"},
+    {"platform": "Product Hunt", "title": "Clarify CRM Agents", "score": 0, "snippet": "AI-powered CRM agents for sales automation", "url": "https://www.producthunt.com/"},
+    {"platform": "Product Hunt", "title": "Swimio - AI swim coaching", "score": 0, "snippet": "Niche AI coaching for swimming technique improvement", "url": "https://www.producthunt.com/"},
+    {"platform": "Hacker News", "title": "RubyLLM - Ruby AI framework (148 pts)", "score": 148, "snippet": "Clear gap for non-Python AI tooling, Ruby developers need AI frameworks", "url": "https://news.ycombinator.com/"},
+    {"platform": "Hacker News", "title": "Show HN: Nub - Bun-like toolkit for Node.js (91 pts)", "score": 91, "snippet": "JS runtime alternatives: developers want better Node.js tooling", "url": "https://news.ycombinator.com/"},
+    {"platform": "Hacker News", "title": "Bunny DNS going free (615 pts)", "score": 615, "snippet": "Infrastructure commoditization: pricing pressure on DNS providers", "url": "https://news.ycombinator.com/"},
+    {"platform": "Hacker News", "title": "FUTO Swipe - open models for on-device typing", "score": 0, "snippet": "Privacy-focused on-device AI for keyboard input", "url": "https://news.ycombinator.com/"}
+  ]
+}
