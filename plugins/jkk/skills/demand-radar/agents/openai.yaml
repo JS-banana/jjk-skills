@@ -1,0 +1,4 @@
+interface:
+  display_name: "Demand Radar"
+  short_description: "Mine and validate real user demand signals"
+  default_prompt: "Use $demand-radar to collect and validate demand signals, then prepare Feishu rows."

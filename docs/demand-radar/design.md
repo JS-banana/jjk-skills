@@ -1,3 +1,9 @@
+> ⚠️ **已废弃 / SUPERSEDED（2026-06-29 归档）**
+> 本文档描述的是早期富 schema 方案（~19 字段 + 5 维加权打分）。该方案因字段臃肿、
+> 大量空字段、维度重复，已被用户否决（见 `requirements.md` §1/§6）。
+> **当前权威 schema 以 skill 为准**：`plugins/jkk/skills/demand-radar/`（13 字段 + 需求强度×需求普遍性 2 维优先级，由 `scripts/run.py` 派生）。
+> 决策背景见 `adr/0001-simplified-schema.md`。本文仅作历史设计记录保留。
+
 # 需求挖掘系统（Demand Radar）深度设计方案
 
 > 基于3篇三木文章分析 + 用户现有基础设施 + 行业补充研究

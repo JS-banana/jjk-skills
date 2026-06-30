@@ -1,12 +1,13 @@
 {
   "name": "jkk",
-  "description": "Collection of writing skills for documentation and context files",
+  "description": "Collection of writing and research skills",
   "version": "1.0.0",
   "author": {
     "name": "Sunss"
   },
-  "keywords": ["writing", "documentation", "context", "readme"],
+  "keywords": ["writing", "documentation", "context", "readme", "research", "demand-mining"],
   "skills": [
+    "./skills/demand-radar",
     "./skills/writer-context-md",
     "./skills/writer-readme-md"
   ]

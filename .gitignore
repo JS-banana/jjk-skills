@@ -1,1 +1,6 @@
 .DS_Store
+__pycache__/
+*.pyc
+
+# demand-radar 运行产物（skill 写 /tmp/，仓库不存数据）
+demand_radar_data/
