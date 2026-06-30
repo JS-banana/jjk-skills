@@ -8,7 +8,7 @@
 
 ```bash
 # 添加市场
-/plugin marketplace add JS-banana/skills
+/plugin marketplace add JS-banana/jjk-skills
 
 # 安装插件
 /plugin install jkk
