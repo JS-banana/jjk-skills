@@ -22,7 +22,9 @@ import os
 import subprocess
 from datetime import datetime, timezone, timedelta
 
-SEEN_FILE = os.path.expanduser("~/.hermes/scripts/vendor_campaign_seen.jsonl")
+SEEN_FILE = os.path.expanduser(
+    os.environ.get("AI_CAMPAIGN_SEEN_FILE", "~/.hermes/scripts/vendor_campaign_seen.jsonl")
+)
 BASE_TOKEN_ENV = "AI_CAMPAIGN_BASE_TOKEN"
 TABLE_ID_ENV = "AI_CAMPAIGN_TABLE_ID"
 DEFAULT_TABLE_ID = "tblYhMRh3fJ0FDfW"
@@ -62,10 +64,6 @@ def cell_text(value):
 
 
 # ─── Bitable operations ───────────────────────────────────────────────
-
-def serialize_url(url, text=None):
-    return url
-
 
 def list_existing_campaigns(base_token, table_id):
     """Get all existing campaign names from Bitable for dedup."""
@@ -182,7 +180,7 @@ def jsonl_record_to_bitable_fields(rec):
         "推荐指数": score_to_stars(score),  # Select type, star string
         "建议": score_to_advice(score),   # Single-select, derived from score
         "状态": "新发现",                  # Single-select
-        "报名入口": serialize_url(url),
+        "报名入口": url,
         "官方确认": "⚠️ 疑似",             # Single-select, agent should override
         "地区": "全球",                     # Single-select, agent should override
         "奖励类型": ["其他"],               # Multi-select, agent should override

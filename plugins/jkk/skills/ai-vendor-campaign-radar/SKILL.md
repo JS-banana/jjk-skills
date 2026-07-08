@@ -68,11 +68,13 @@ exceptional.
    - Completion: field contract, seen baseline, and any schema drift are known.
 
 3. Collect candidates.
-   - Public scan: start with AgentDeadlines, then rotate Tier A sources from
-     `source-registry.md`. For weekly deep scans, active queries, or community
-     scans, run `agent-reach doctor --json` first when available and choose the
-     active backend for Twitter/X, Reddit, Xiaohongshu, Bilibili, V2EX, Exa, RSS,
-     or web.
+   - Public scan: structured endpoints first, per the 结构化优先原则 in
+     `source-registry.md` — AgentDeadlines (JSON-LD), Devpost (JSON API),
+     CompeteHub, and aihot lead; search queries only catch what the aggregators
+     miss. Then rotate remaining Tier A sources. For weekly deep scans, active
+     queries, or community scans, run `agent-reach doctor --json` first when
+     available and choose the active backend for Twitter/X, Reddit, Xiaohongshu,
+     Bilibili, V2EX, Exa, RSS, or web.
    - Use `tool-fallbacks.md` when agent-reach, Tavily, Twitter, DDG, curl, Exa,
      or Firecrawl paths fail.
    - User-forwarded notice: extract the candidate from the message first; only
@@ -85,7 +87,10 @@ exceptional.
 4. Gate, dedupe, and score.
    - Reject before scoring when a hard gate fails.
    - Dedupe by normalized vendor + campaign name + URL against seen JSONL and
-     Base records.
+     Base records. With multiple aggregators live, the same campaign appears
+     under different URLs; normalize on campaign name + organizer + start/end
+     dates + registration domain before comparing (Devpost, lablab, and vendor
+     sites overlap the most).
    - Score `推荐指数` from 1-5 by averaging reward value, urgency, and official
      confirmation. Difficulty stays separate in `难度评级`.
    - Completion: every kept and rejected candidate has a one-line reason.

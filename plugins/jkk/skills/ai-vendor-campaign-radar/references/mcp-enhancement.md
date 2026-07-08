@@ -9,13 +9,16 @@
 
 ## ⚠️ 配置踩坑
 
-### API Key 被截断
-Hermes 的工具输出 redaction 系统会截断 API key 模式串。写入 config.yaml 时，不要把完整 key 放在单个 Python 字符串中：
+### API Key 管理
+所有 key 一律从环境变量读取（如 `FIRECRAWL_API_KEY`），**不要把 key 明文写进本仓库任何文件**——
+本文档曾内嵌过一个 Firecrawl key，已移除；需在 Hermes 服务器和本机各自配置环境变量。
+
+Hermes 的工具输出 redaction 系统会截断 API key 模式串。用工具写 config.yaml 时，不要把完整 key 放在单个 Python 字符串中：
 ```python
 # ❌ 会被截断
-key = "fc-60262d53e047448eac456c36e8ce3ae1"
-# ✅ 拆分拼接
-key = "fc-" + "60262d53e047448eac456c36e8ce3ae1"
+key = "fc-<完整key>"
+# ✅ 从环境变量读取（同时规避 redaction）
+key = os.environ["FIRECRAWL_API_KEY"]
 ```
 
 ### hermes mcp add 交互式提示

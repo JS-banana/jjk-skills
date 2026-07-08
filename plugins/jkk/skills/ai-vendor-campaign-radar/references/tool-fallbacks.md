@@ -27,7 +27,9 @@ not block the run.
 
 ## Search Order
 
-1. Fetch AgentDeadlines HTML with `curl`, then run
+1. Hit structured endpoints first (see 结构化优先原则 in `source-registry.md`):
+   AgentDeadlines JSON-LD, Devpost JSON API, CompeteHub, aihot.today. Fetch
+   AgentDeadlines HTML with `curl`, then run
    `scripts/parse_agentdeadlines.py`.
 2. Use the active agent-reach backend for social/community sources when
    available.
@@ -102,6 +104,16 @@ Rules:
   available.
 - ETHGlobal event slugs can return old-year pages. Cross-check year and date.
 - `.dev` domains may be blocked by Hermes safety checks; prefer search/extract
-  tools over raw curl.
+  tools over raw curl. This affects `competehub.dev`: if blocked, fall back to
+  its V2EX mirror
+  (`curl 'https://www.v2ex.com/api/topics/show.json?username=wuswoo'`) or the
+  CSDN/知乎 monthly posts.
+- CompeteHub returns 403 to default/curl UAs; send a real browser User-Agent
+  (verified working 2026-07-07).
+- Volcengine `/activity` 302-redirects to `/activities`; use `curl -L`.
+- Devpost JSON API (`devpost.com/api/hackathons`) needs no auth; if it ever
+  starts failing, fall back to `site:devpost.com` search, not HTML scraping.
+- HN Algolia (`hn.algolia.com/api/v1`) is unauthenticated and rarely blocked;
+  use it as the keyword-listening fallback when DDG hits bot detection.
 - Regional activity signals include local currency, province/state names, and
   school-only requirements. Reject unless the reward or online path justifies it.

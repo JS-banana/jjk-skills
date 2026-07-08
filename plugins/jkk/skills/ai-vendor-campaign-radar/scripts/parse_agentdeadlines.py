@@ -19,6 +19,7 @@ Workflow:
 
 import argparse
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -27,8 +28,11 @@ from datetime import datetime, timezone
 def parse_args():
     p = argparse.ArgumentParser(description="Parse AgentDeadlines JSON-LD for unseen campaigns")
     p.add_argument("--html", default="/tmp/agentdeadlines.html", help="Path to downloaded HTML")
-    p.add_argument("--seen", default="/home/claw/.hermes/scripts/vendor_campaign_seen.jsonl",
-                   help="Path to seen records JSONL")
+    p.add_argument("--seen",
+                   default=os.path.expanduser(
+                       os.environ.get("AI_CAMPAIGN_SEEN_FILE",
+                                      "~/.hermes/scripts/vendor_campaign_seen.jsonl")),
+                   help="Path to seen records JSONL (env: AI_CAMPAIGN_SEEN_FILE)")
     p.add_argument("--include-expired", action="store_true", help="Include expired campaigns")
     p.add_argument("--json", action="store_true", help="Output raw JSON (default: human-readable)")
     return p.parse_args()
