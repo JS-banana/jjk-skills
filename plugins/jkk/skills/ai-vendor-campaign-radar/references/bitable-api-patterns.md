@@ -160,3 +160,18 @@ lark-cli base +view-get-filter \
 - Multiselect values must be arrays.
 - View names can drift from filters; inspect filters before treating a view as
   a rule.
+- Select fields reject unknown option values (`800030005 not_found`); this
+  table does NOT auto-create options. A new vendor/channel needs its option
+  added first via `lark-cli base +field-update`.
+- ⚠️ **Option-append incident (2026-07-08)**: `+field-search-options` defaults
+  to `--limit 30` — reading "all" options without `--limit 200` and then doing
+  a full-PUT `+field-update` truncated `厂商` from 60 to 33 options and wiped
+  the cell values of 35 records (restored from the website's snapshot.json).
+  Before ANY `+field-update` on a select field: read options with
+  `--limit 200`, append to the complete list, and read back verifying every
+  pre-existing option name survived. Readback can lag a second or two; retry
+  before concluding failure.
+- `+record-list` in lark-cli 1.0.5x returns columnar `{fields: [名...],
+  data: [[行]...]}`, not `items[].fields` dicts. `list_existing_campaigns` in
+  the sync script handles both shapes; if dedupe suddenly reports 0 existing
+  records against a non-empty table, suspect a response-shape change first.

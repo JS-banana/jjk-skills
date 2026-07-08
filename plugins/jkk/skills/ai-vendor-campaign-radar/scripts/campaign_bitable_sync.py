@@ -66,8 +66,8 @@ def cell_text(value):
 # ─── Bitable operations ───────────────────────────────────────────────
 
 def list_existing_campaigns(base_token, table_id):
-    """Get all existing campaign names from Bitable for dedup."""
-    items = []
+    """Get all existing campaign (vendor|name) keys from Bitable for dedup."""
+    existing = set()
     offset = 0
     limit = 200
     while True:
@@ -85,20 +85,22 @@ def list_existing_campaigns(base_token, table_id):
             ]
         )
         data = resp.get("data", {})
-        batch = data.get("items") or data.get("records") or []
-        if not isinstance(batch, list):
-            break
-        items.extend(batch)
+        # lark-cli 1.0.5x returns columnar {fields: [名...], data: [[行]...]};
+        # keep the items/records dict shape as fallback for other versions.
+        rows = data.get("data")
+        if isinstance(rows, list):
+            columns = data.get("fields") or []
+            batch = [dict(zip(columns, row)) for row in rows]
+        else:
+            batch = [item.get("fields", {})
+                     for item in (data.get("items") or data.get("records") or [])]
+        for fields in batch:
+            name = cell_text(fields.get("活动名称"))
+            vendor = cell_text(fields.get("厂商"))
+            existing.add(f"{vendor}|{name}".lower().strip())
         if len(batch) < limit:
             break
         offset += len(batch)
-    # Return set of (vendor, campaign_name) for dedup
-    existing = set()
-    for item in items:
-        fields = item.get("fields", {})
-        name = cell_text(fields.get("活动名称"))
-        vendor = cell_text(fields.get("厂商"))
-        existing.add(f"{vendor}|{name}".lower().strip())
     return existing
 
 
