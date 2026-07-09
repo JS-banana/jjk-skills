@@ -19,8 +19,10 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import subprocess
 from datetime import datetime, timezone, timedelta
+from urllib.parse import urlparse
 
 SEEN_FILE = os.path.expanduser(
     os.environ.get("AI_CAMPAIGN_SEEN_FILE", "~/.hermes/scripts/vendor_campaign_seen.jsonl")
@@ -63,11 +65,38 @@ def cell_text(value):
     return str(value or "")
 
 
+URL_RE = re.compile(r"https?://[^\s)\]]+")
+
+
+def cell_url(value):
+    """Extract the first URL from a cell (handles dict {link,text} and markdown [x](y))."""
+    if isinstance(value, dict):
+        candidate = str(value.get("link") or value.get("text") or "")
+    else:
+        candidate = cell_text(value)
+    match = URL_RE.search(candidate)
+    return match.group(0) if match else ""
+
+
+def normalize_entry_url(url):
+    """Dedup key for 报名入口: lowercase host + path without trailing slash + query.
+
+    Cross-aggregator duplicates carry different titles/vendors but the same
+    entry URL, so this is the primary duplicate signal.
+    """
+    parsed = urlparse(str(url or "").strip())
+    if not parsed.netloc:
+        return ""
+    query = f"?{parsed.query}" if parsed.query else ""
+    return f"{parsed.netloc.lower()}{parsed.path.rstrip('/')}{query}"
+
+
 # ─── Bitable operations ───────────────────────────────────────────────
 
 def list_existing_campaigns(base_token, table_id):
-    """Get all existing campaign (vendor|name) keys from Bitable for dedup."""
-    existing = set()
+    """Get existing dedup keys from Bitable: {"names": vendor|campaign, "urls": normalized 报名入口}."""
+    names = set()
+    urls = set()
     offset = 0
     limit = 200
     while True:
@@ -78,6 +107,7 @@ def list_existing_campaigns(base_token, table_id):
                 "--table-id", table_id,
                 "--field-id", "活动名称",
                 "--field-id", "厂商",
+                "--field-id", "报名入口",
                 "--offset", str(offset),
                 "--limit", str(limit),
                 "--as", "user",
@@ -97,11 +127,14 @@ def list_existing_campaigns(base_token, table_id):
         for fields in batch:
             name = cell_text(fields.get("活动名称"))
             vendor = cell_text(fields.get("厂商"))
-            existing.add(f"{vendor}|{name}".lower().strip())
+            names.add(f"{vendor}|{name}".lower().strip())
+            url_key = normalize_entry_url(cell_url(fields.get("报名入口")))
+            if url_key:
+                urls.add(url_key)
         if len(batch) < limit:
             break
         offset += len(batch)
-    return existing
+    return {"names": names, "urls": urls}
 
 
 def create_record(fields, base_token, table_id):
@@ -226,8 +259,14 @@ def sync_all(dry_run=False, base_token=None, table_id=None):
         vendor = rec.get("vendor", "")
         clean_v = vendor.split(" (")[0] if " (" in vendor else vendor
         key = f"{clean_v}|{rec.get('campaign', '')}".lower().strip()
-        if key not in existing:
-            new_records.append(rec)
+        url_key = normalize_entry_url(rec.get("url", ""))
+        if key in existing["names"] or (url_key and url_key in existing["urls"]):
+            continue
+        new_records.append(rec)
+        # Guard against duplicates inside the same batch as well.
+        existing["names"].add(key)
+        if url_key:
+            existing["urls"].add(url_key)
 
     if not new_records:
         print("所有记录已存在于多维表格中，无需同步")
@@ -274,8 +313,12 @@ def write_single(json_str, base_token=None, table_id=None):
     vendor = rec.get("vendor", "")
     clean_v = vendor.split(" (")[0] if " (" in vendor else vendor
     key = f"{clean_v}|{rec.get('campaign', '')}".lower().strip()
-    if key in existing:
+    if key in existing["names"]:
         print(f"SKIP: 记录已存在 - {rec.get('campaign', '')}")
+        return
+    url_key = normalize_entry_url(rec.get("url", ""))
+    if url_key and url_key in existing["urls"]:
+        print(f"SKIP: 报名入口已存在（跨源重复） - {rec.get('campaign', '')} @ {url_key}")
         return
 
     # Build fields with defaults, then apply overrides

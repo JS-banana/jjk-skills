@@ -88,9 +88,11 @@ exceptional.
    - Reject before scoring when a hard gate fails.
    - Dedupe by normalized vendor + campaign name + URL against seen JSONL and
      Base records. With multiple aggregators live, the same campaign appears
-     under different URLs; normalize on campaign name + organizer + start/end
-     dates + registration domain before comparing (Devpost, lablab, and vendor
-     sites overlap the most).
+     under different titles and vendor spellings; the entry URL is the primary
+     duplicate signal, and the sync script hard-blocks writes whose normalized
+     报名入口 already exists in the Base. Name-based comparison only catches
+     what URL matching cannot (same campaign listed under different entry
+     URLs — Devpost, lablab, and vendor sites overlap the most).
    - Score `推荐指数` from 1-5 by averaging reward value, urgency, and official
      confirmation. Difficulty stays separate in `难度评级`.
    - Completion: every kept and rejected candidate has a one-line reason.

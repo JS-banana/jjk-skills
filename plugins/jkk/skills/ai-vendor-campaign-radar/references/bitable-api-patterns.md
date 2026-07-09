@@ -129,6 +129,12 @@ Rules:
 - Do not pass `活动详情链接`.
 - Do not create unknown select options unless the user explicitly wants schema
   changes. Prefer `其他` for uncertain vendor/source values.
+- The sync script skips a write when the normalized `报名入口` URL (lowercase
+  host + path + query) already exists in the table — cross-source duplicates
+  carry different titles but the same entry URL. Because of this, `报名入口`
+  must be the campaign-specific page, never a portal homepage (e.g.
+  `challenge.xfyun.cn` hosts many campaigns; a homepage URL collides with the
+  next campaign from the same portal and gets dropped as a duplicate).
 
 ## Views
 
