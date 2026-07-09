@@ -23,6 +23,8 @@ Write these fields only:
 | 原始链接 | URL | Specific URL |
 | 来源平台 | select | Must match a current Base option; the Base select may be narrower than the sources you mine — add the platform or use `其他` if missing |
 | 语言 | select | 中文 / 英文 / 双语 |
+| 发布时间 | date | Publish time of the original evidence (post/comment/review), millisecond timestamp; required — every source carries one, so this must never be left empty |
+| 佐证链接 | text | Second/third URL where the same job recurs; the receipt behind `需求普遍性=高`. Fill only when recurrence exists — empty means single-source, which is itself information |
 
 ## Priority
 
@@ -72,6 +74,32 @@ value in your rows exists in the field's current options. If a source platform i
 missing (e.g. App Store, Bilibili), add it once with `+field-update` (send the full
 options list — update is PUT, not patch) or map it to `其他`.
 
+## Cross-Run Dedupe
+
+Scheduled runs re-surface the same hot posts. Before writing, dump the existing
+`原始链接`/`标题` columns and pass the dump to `run.py` — the dedupe itself is
+deterministic in the script (URL normalization, markdown-cell unwrapping, both
+record-list response shapes, comment-row URL+标题 keying):
+
+```bash
+lark-cli base +record-list --base-token "$BASE_TOKEN" --table-id "$TABLE_ID" \
+  --field-id 原始链接 --field-id 标题 --limit 200 --as user --format json \
+  > /tmp/demand-radar-existing.json
+
+python3 scripts/run.py --input /tmp/demand-radar-rows.json \
+  --existing /tmp/demand-radar-existing.json \
+  --output /tmp/demand-radar-feishu.json --report /tmp/demand-radar-report.json
+```
+
+- `--limit` caps at 200; page with `--offset` and merge dumps when the table
+  exceeds one page.
+- Skipped rows appear under `duplicates` in the report; include the count in
+  the run summary alongside accepted/rejected.
+- If the report shows 0 duplicates against a table that plainly contains the
+  same URLs, suspect a record-list response-shape change first —
+  `load_existing` in `run.py` raises on unknown shapes rather than silently
+  passing everything.
+
 Batch write usually needs `@./relative-path` from the file directory:
 
 ```bash
@@ -86,9 +114,17 @@ cd /tmp && lark-cli base +record-batch-create \
 
 - `+field-update` takes `options` at the top level (not under `property`) and is a
   full PUT: include all existing options plus the new one, or the rest are deleted.
+- Before ANY `+field-update` on a select field, read the options with
+  `+field-search-options --limit 200` — the default `--limit 30` silently
+  truncates, and a full PUT from a truncated list deletes the missing options
+  and wipes those cell values (this exact incident hit campaign-radar on
+  2026-07-08). After writing, read back and verify every pre-existing option
+  survived; readback can lag a second or two.
 - `+record-batch-create` consumes `run.py`'s `{fields, rows}` output directly.
 - `+record-get` prints markdown by default and takes one `--record-id` (no comma lists).
 - Add `--dry-run` to preview any write request before executing.
+- `+field-update` is gated as a high-risk write and needs `--yes` to execute;
+  `+record-batch-create` does not.
 
 ## Verify
 

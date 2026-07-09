@@ -32,17 +32,24 @@ Default: make stable pull, community feed, review/complaint, or paid workflow
 the primary mode when available. Use search probes after the source plan is
 clear.
 
+Access routing: try plain fetch first; if a source is an SPA that returns empty
+or a shell (Gumroad, 掘金, 电鸭, 什么值得买), route through Jina or its RSSHub
+route instead of retrying plain fetch. `source-map.md` marks which tier each
+channel needs and which channels are dead ends.
+
 ## Acquisition Modes
 
 | Mode | When to use | How to read it |
 | --- | --- | --- |
 | Board/feed browsing | You need broad discovery without overfitting keywords | Browse relevant communities by hot/new/top; keep posts where the actor, scene, and workaround appear |
 | Comment mining | A post has strong reaction but weak original text | Read top comments; the comment can become the primary signal |
-| Review mining | A category already has products | Prefer 2-4 star reviews; extract failed expectation, switching reason, and missing workflow |
+| Review mining | A category already has products | Prefer 2-4 star reviews; use rating-filter deep links (`?ratings[]=1`, `?filter=1`) to jump straight to low-star pages; extract failed expectation, switching reason, and missing workflow |
 | Complaint mining | Service/process pain is likely | Treat as process evidence; reject if it is only one company's support failure |
 | Paid service mining | People already outsource the work | Extract the repeated manual job, order/review count, price, and buyer role |
 | Procurement/tender mining | B-side budget may exist | Extract buyer organization, workflow requirement, budget, deadline, and constraints |
 | Alternatives mining | Existing tools are costly or unsatisfactory | Search native switching language and read why current tools fail |
+| Structured-demand board mining | Demand is already posted, explicit, and vote-ranked | Enumerate public feedback boards (Canny/Featurebase/UserVoice), public roadmaps, and Q&A boards board-by-board instead of searching; votes give magnitude, high-vote long-Open posts reveal incumbent gaps; the post plus its comments are the evidence |
+| Template census | Users already self-serve a job with templates or spreadsheets | Enumerate template marketplaces (Notion gallery, WPS/Office templates, Etsy digital) by sales/downloads; a high-usage template is a structured job people solve with a workaround — then return to its reviews/comments for first-hand evidence |
 | Search probe | You need recall for a known scene | Use platform-native phrase families; log hits and misses |
 | Product directory mining | You need categories and incumbents | Use only as leads; go find users, reviews, complaints, or paid workflows |
 | Third-party scale check | You need to rank categories before deeper reading | Use downloads, rankings, ratings, launch/review volume, job posts, or trend pages; then seek original evidence |
@@ -100,10 +107,6 @@ not a direct product-wish sentence.
 | Switching/cost | `平替`, `替代`, `不想续费`, `订阅太贵`, `开会员`, `割韭菜`, `智商税`, `不值` | Price pain and replacement behavior | Pure bargain hunting |
 | Bad experience | `避坑`, `踩雷`, `后悔买`, `吐槽`, `不好用`, `白花钱` | Review and complaint mining | Single-product defect |
 | Paid manual service | `代做`, `代整理`, `代填`, `代录入`, `代转写`, `报销`, `发票`, `报价单`, `客户资料` | Money-backed manual jobs | Seller spam without buyer evidence |
-
-When Xiaohongshu returns `[]` for three varied native queries, record the source
-as unavailable or unreliable for that batch and switch to another Chinese
-source. Do not infer that the demand is absent.
 
 ## Platform Notes
 

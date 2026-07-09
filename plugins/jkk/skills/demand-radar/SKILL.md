@@ -1,11 +1,12 @@
 ---
 name: demand-radar
 description: >
-  Use when collecting, screening, validating, analyzing, or writing demand
-  signals for product discovery; when mining user pain points from social
-  posts, reviews, complaints, forums, Reddit, Xiaohongshu, V2EX, Hacker News,
-  App Store/G2/Capterra, service marketplaces, procurement sources, or when
-  preparing Feishu Base rows through lark-cli.
+  Demand-signal mining for product discovery. Use when the user wants to
+  collect or deep-dig user pain points from Reddit, Xiaohongshu, V2EX, forums,
+  app/marketplace reviews (App Store, Shopify, WordPress, G2), feedback
+  boards, complaints, paid services, or procurement; when screening or
+  reviewing already-collected demand rows; or when preparing and writing
+  demand rows to the Feishu Base through lark-cli.
 license: MIT
 ---
 
@@ -38,7 +39,8 @@ pain, workaround, cost, reaction, payment, or repeated demand.
      source when cheap: Product Hunt, trend pages, app rankings, downloads,
      procurement search, or job posts.
    - Choose the acquisition mode first: feed browsing, review mining, comment
-     mining, paid workflow, procurement, alternatives, or search probe.
+     mining, paid workflow, procurement, alternatives, structured-demand
+     boards, template census, or search probe.
    - State whether keyword search is primary or auxiliary for this run.
    - Watch for 需求方向 over-concentration: money/subscription signals cluster
      easily; if a batch skews to one direction, note it and plan a follow-up on
@@ -70,7 +72,9 @@ pain, workaround, cost, reaction, payment, or repeated demand.
 
 4. Apply the evidence gate.
    - Use `references/evidence-gate.md`.
-   - Keep a rejected list with one-line reasons.
+   - Keep a rejected list with one-line reasons, and a parked list for
+     candidates missing exactly one gate (shape in
+     `references/evidence-gate.md`).
    - Completion: every kept record passes all hard gates and no one-vote
      exclusion applies.
 
@@ -85,7 +89,9 @@ pain, workaround, cost, reaction, payment, or repeated demand.
 
 6. Validate and write.
    - Prepare rows with `references/feishu-schema.md`.
-   - Run `python3 scripts/run.py --input /tmp/demand-radar-rows.json --output /tmp/demand-radar-feishu.json --report /tmp/demand-radar-report.json`.
+   - Run `python3 scripts/run.py --input /tmp/demand-radar-rows.json --existing /tmp/demand-radar-existing.json --output /tmp/demand-radar-feishu.json --report /tmp/demand-radar-report.json`
+     (`--existing` is the `+record-list` dump described in
+     `references/feishu-schema.md`; it makes cross-run dedupe deterministic).
    - Before writing, reconcile against the live Base with `lark-cli base
      +field-list`: confirm every select value in your rows (来源平台, 需求方向,
      产品形态, 处理状态, 需求强度, 需求普遍性, 语言) exists in the Base's current
@@ -93,20 +99,23 @@ pain, workaround, cost, reaction, payment, or repeated demand.
      value first; never assume the documented enums still match.
    - For scheduled runs, write with `lark-cli` and verify record count and
      sample URLs. For review-only runs, stop at validated JSON.
-   - Completion: accepted/rejected counts are reported; written rows are
-     verified or clearly marked as not written.
+   - Completion: accepted/rejected/duplicate-skipped counts are reported;
+     written rows are verified or clearly marked as not written.
 
 ## Deep Mining Mode
 
 When the user asks to deep dig or continue mining, batch by topic category:
 
-1. Pick 3-4 categories from `references/source-map.md`.
-2. Pick acquisition modes from `references/acquisition-strategy.md`.
-3. Run native-language browsing or query probes across available source
+1. Read `/tmp/demand-radar-parked.json` if present and try to complete each
+   parked candidate's missing gate before opening new sources.
+2. Pick 3-4 categories from `references/source-map.md`.
+3. Pick acquisition modes from `references/acquisition-strategy.md`.
+4. Run native-language browsing or query probes across available source
    families.
-4. Dedupe by URL or title, sort by engagement, then read originals.
-5. Apply the evidence gate and write in batches of 5-8 rows.
-6. After each batch, report what was kept, rejected, written, and unavailable.
+5. Dedupe by URL or title, sort by engagement, then read originals.
+6. Apply the evidence gate and write in batches of 5-8 rows.
+7. After each batch, report what was kept, rejected, parked, written, and
+   unavailable.
 
 ## Rules
 

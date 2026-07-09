@@ -50,6 +50,11 @@ _Avoid_: Translated keywords
 A targeted query used to improve recall after the source plan is clear.
 _Avoid_: Primary evidence
 
+**Parked Candidate**:
+A real-looking demand missing exactly one gate, saved for the next deep run to
+complete instead of being rejected.
+_Avoid_: Soft reject, backlog
+
 **Feishu Row**:
 The final validated shape written to the demand Base after a candidate passes
 the evidence gate and is mapped to the current schema.

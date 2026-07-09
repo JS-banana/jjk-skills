@@ -32,6 +32,10 @@ opencli xiaohongshu comments "FULL_SIGNED_URL" --format plain
 
 - Requires Chrome/OpenCLI session.
 - `note` and `comments` require the full signed URL from search results.
+- Write `原始链接` as the canonical form
+  `https://www.xiaohongshu.com/explore/NOTE_ID` — the signed `search_result`
+  URL carries an expiring `xsec_token`. Note IDs' first 8 hex chars are the
+  publish timestamp in seconds (use for `发布时间`).
 - `read` is not a subcommand.
 - If three different queries return `[]`, note possible logged-out browser
   session and switch source.
@@ -150,6 +154,66 @@ curl -s "https://r.jina.ai/https://chromewebstore.google.com/detail/EXTENSION_SL
   review evidence after reading the review body.
 - G2 and Fiverr often return CAPTCHA through Jina; use Exa snippets only as
   leads, not accepted evidence.
+
+## Marketplace Reviews And Feedback Boards
+
+Access patterns verified 2026-07; re-verify with a sample fetch when one fails.
+
+```bash
+# Shopify App Store: rating filter jumps straight to 1-3 star pain.
+curl -s "https://apps.shopify.com/APP_SLUG/reviews?page=1&ratings%5B%5D=1"
+
+# WordPress.org plugins: reviews by star, and the unresolved-threads view
+# (a live list of unmet needs).
+curl -s "https://wordpress.org/support/plugin/PLUGIN_SLUG/reviews/?filter=2"
+curl -s "https://wordpress.org/support/plugin/PLUGIN_SLUG/unresolved/"
+
+# Atlassian Marketplace: public REST, structured JSON reviews (stars, full
+# text, date, helpful votes). No auth.
+curl -s "https://marketplace.atlassian.com/rest/2/addons?limit=25&hosting=cloud"
+curl -s "https://marketplace.atlassian.com/rest/2/addons/ADDON_KEY/reviews"
+
+# Public feedback boards: server-rendered, vote counts included. No central
+# directory — discover boards with search dorks.
+curl -s "https://COMPANY.canny.io/BOARD"
+mcporter call 'exa.web_search_exa(query: "site:canny.io CATEGORY", numResults: 5)'
+curl -s "https://COMPANY.uservoice.com/forums/FORUM_ID"
+
+# Gumroad Discover: SPA, must go through Jina. Review count ≈ sales proxy.
+curl -s "https://r.jina.ai/https://gumroad.com/discover?query=QUERY" -H "Accept: text/plain"
+
+# Google Suggest: free, no key. Seed with pain phrasing ("how to", "best",
+# "alternative to", "why is X so").
+curl -s "https://suggestqueries.google.com/complete/search?client=firefox&q=how+to+SEED"
+```
+
+## Chinese Communities
+
+```bash
+# 豆瓣小组: explore feed plain-fetches (titles + snippets = leads). Topic
+# detail pages return 403 without login even via Jina (verified 2026-07) —
+# read originals through the RSSHub douban group route or a browser session.
+curl -s "https://www.douban.com/group/explore" -H "User-Agent: Mozilla/5.0"
+
+# 掘金: SPA, must go through Jina (or an RSSHub route).
+curl -s "https://r.jina.ai/https://juejin.cn/tag/%E5%88%9B%E4%B8%9A" -H "Accept: text/plain"
+
+# 电鸭社区: freelance/remote workflow + budget signals. Jina-readable.
+curl -s "https://r.jina.ai/https://eleduck.com/" -H "Accept: text/plain"
+
+# 电诉宝: public complaint list, complements 黑猫 on platform/B-side disputes.
+curl -s "https://www.100ec.cn/Index/complain_list.html" -H "User-Agent: Mozilla/5.0"
+
+# SegmentFault 问答: plain HTTP.
+curl -s "https://segmentfault.com/questions" -H "User-Agent: Mozilla/5.0"
+
+# 虎扑: plain HTTP with UA, rate-limit yourself.
+curl -s "https://bbs.hupu.com/all-gambia" -H "User-Agent: Mozilla/5.0"
+```
+
+什么值得买 / 贴吧 / 即刻 / 酷安 are RSSHub-route-only; 知乎 / 京东 / NGA /
+Linux.do are dead ends (see `source-map.md`). Do not build direct fetchers for
+them.
 
 ## Paid Manual Services
 

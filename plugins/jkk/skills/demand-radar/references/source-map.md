@@ -16,11 +16,13 @@ pretending the platform is covered.
 
 For narrow runs, use at least three source families:
 
-1. Mass-market lived pain: Xiaohongshu, Reddit, V2EX, Bilibili comments.
+1. Mass-market lived pain: Xiaohongshu, Douban groups, Reddit, V2EX, Bilibili
+   comments, Hupu.
 2. Explicit ask or dissatisfaction: Q&A, reviews, complaints, recommendation
-   threads.
+   threads, public feedback boards (Canny/Featurebase/UserVoice).
 3. Money/workflow evidence: paid manual services, product reviews, procurement,
-   tenders, industry forums.
+   tenders, industry forums, marketplace reviews (Shopify/WordPress/Atlassian),
+   freelance communities (电鸭).
 
 For general or deep runs, add a fourth lane:
 
@@ -57,15 +59,31 @@ prioritize topics or validate recurrence.
 | Job posts | Budgeted role/workflow signal | LinkedIn if configured; otherwise Exa/Jina job boards | Validation/direction unless task pain is explicit |
 | Package/download metrics | Adoption and developer ecosystem scale | npm API, PyPIStats, GitHub stars/issues | Scale only |
 | Trend/market data | Timing and category selection | Exploding Topics, Google Trends, reports, directories | Direction only |
+| Shopify App Store reviews | Primary evidence from paying merchants | Plain fetch `apps.shopify.com/{slug}/reviews?page=N&ratings[]=1` (rating filter hits 1-3 star directly) | Default B-side review source; no login |
+| WordPress.org plugin reviews/support | Primary evidence; `/unresolved/` view is a live unmet-needs list | Plain fetch `wordpress.org/support/plugin/{slug}/reviews/?filter=1` and `/unresolved/` | Default international review source; support threads beat reviews |
+| Atlassian Marketplace | Primary evidence, structured JSON, B2B high willingness-to-pay | Public REST, no auth: `marketplace.atlassian.com/rest/2/addons/{key}/reviews` | Easiest integration; star/full text/date/votes in JSON |
+| Public feedback boards (Canny/Featurebase/UserVoice) | Structured explicit demand; vote counts are pre-quantified demand magnitude | Plain fetch `{co}.canny.io/{board}`, `{co}.featurebase.app`, `{co}.uservoice.com/forums/{id}`; discover via `site:canny.io` dorks — no central directory | Structured-demand lane; long-Open high-vote posts = incumbent gaps |
+| Gumroad Discover | Willingness-to-pay direction; review count ≈ sales proxy | Jina on `gumroad.com/discover` (SPA; plain fetch returns nothing) | Direction/WTP only |
+| Google Suggest / PAA | Search-intent recall, pain phrasing space | Free no-key `suggestqueries.google.com/complete/search?client=firefox&q=`; Answer Socrates for PAA | Auxiliary recall only |
+| dev.to / Lobsters / Indie Hackers | Developer/indie direction, occasional primary | Public JSON `dev.to/api/articles`, `lobste.rs/hottest.json`; plain fetch IH | Direction unless concrete actor/workflow |
+| F5Bot | Recurring Reddit/HN keyword monitoring | Free email alerts (GummySearch shut down 2025-11) | Monitoring channel for scheduled runs |
+| 豆瓣小组 | Chinese mass-market life pain (租房/考公/攒钱/抠门组) | Explore feed plain-fetches (`douban.com/group/explore`, titles + snippets); topic detail pages 403 without login (verified 2026-07) — read originals via the RSSHub douban group route (item body carries content) or a browser session | Feed = lead source; original reading needs RSSHub/browser |
+| 掘金 | Primary evidence for indie-dev monetization/workflow (变现复盘、踩坑) | Jina on `juejin.cn` (SPA); RSSHub route | Chinese indie/dev source |
+| 电鸭社区 | Primary evidence for freelance/remote workflow + budget signals | Jina on `eleduck.com`, no login wall | Money/workflow source |
+| 电诉宝 | Complaint evidence, platform/B-side disputes | Plain fetch `100ec.cn` complaint list | Complements 黑猫 (which skews C-side retail) |
+| SegmentFault / Gitee issues | Chinese developer workflow pain, OSS feature gaps | Plain fetch `/questions`, targeted repo issues; RSSHub | Developer-only unless scoped |
+| 少数派 / 虎扑 | Tool-direction discussions; male-skewed consumer/digital pain | Plain fetch `sspai.com`, `bbs.hupu.com` (UA + rate limit) | Secondary Chinese sources |
+| 什么值得买 | 求推荐/平替/避坑 evidence | RSSHub smzdm route ONLY — direct fetch and Jina both blocked | Use via RSSHub or skip |
 
 ## Source Families
 
 | Family | Use for | Sources | Notes |
 | --- | --- | --- | --- |
-| Daily-life social | Mass-market lived pain | Xiaohongshu, Reddit, Bilibili comments | Best for lifestyle, health, travel, home, shopping, study, family |
+| Daily-life social | Mass-market lived pain | Xiaohongshu, 豆瓣小组, Reddit, Bilibili comments, 虎扑 | Best for lifestyle, health, travel, home, shopping, study, family; 豆瓣/虎扑 balance XHS's demographic skew |
+| Feedback boards | Vote-ranked explicit demand | Canny, Featurebase, UserVoice public boards | Votes quantify magnitude; long-Open high-vote posts reveal incumbent gaps; discover via `site:` dorks |
 | Idea communities | Direct "someone make this" leads | r/SomebodyMakeThis, r/AppIdeas, r/Startup_Ideas, Unvalidated Ideas, IdeasAI | Leads only; require original demand evidence before accepting |
 | Question/recommendation | Explicit unsolved needs | V2EX, Reddit, Quora if readable, Zhihu if logged in | Reject generic recommendation without scene |
-| Reviews/ratings | Existing product gaps | App Store, Google Play, Chrome Web Store, G2, Capterra, Trustpilot, AlternativeTo | Prefer 2-4 star reviews; 1-star is often product rage |
+| Reviews/ratings | Existing product gaps | App Store, Google Play, Chrome Web Store, Shopify App Store, WordPress.org plugins, Atlassian Marketplace, G2, Capterra, Trustpilot, AlternativeTo | Prefer 2-4 star reviews; 1-star is often product rage; Shopify/WordPress/Atlassian are login-free |
 | Consumer complaints | Strong service pain | 黑猫投诉, public complaint boards | Treat as service/process pain, not always product opportunity |
 | Paid manual services | Repetitive paid workflows | Fiverr, Upwork, 淘宝, 闲鱼, 猪八戒 | Search `代做`, `代整理`, `代填`, `代录入`, `代转写` |
 | Business/procurement | Budgeted workflow needs | 中国政府采购网, public resource exchanges, industry forums | Strong for B-side; extract role, workflow, budget, requirement |
@@ -85,24 +103,15 @@ prioritize topics or validate recurrence.
 | Validation | The pain repeats or money is involved | Multiple sources, 2-4 star reviews, paid services, procurement, order counts |
 | Scale | A category or tool has adoption | Downloads, stars, ratings, rankings, traffic estimates |
 
-Accepted records need evidence. Direction and lead sources must be followed by
-original user/workflow evidence. Scale sources cannot create accepted records by
-themselves.
+Only the Evidence role can produce accepted records; the gate for the other
+roles is `evidence-gate.md` (Third-Party Data Rule).
 
 ## Language Scope
 
-Do both Chinese and English unless the user narrows scope. The two languages are
-not interchangeable:
-
-- English Reddit/forum queries often work as full intent phrases, such as
-  "what do you use to" or "alternative to", combined with a subreddit or scene.
-- Chinese social/forum queries often combine scene words with tone markers such
-  as `求推荐`, `太麻烦`, `平替`, `避坑`, or `手动整理`.
-- Translation is for final Chinese row writing, not for query construction.
-- Maintain hit/miss notes so the phrase list improves after each batch.
-
-Use `acquisition-strategy.md` for native phrase families and non-keyword
-channels.
+Do both Chinese and English unless the user narrows scope. The two languages
+are not interchangeable — build queries from the native phrase families in
+`acquisition-strategy.md`, never by translating one language's keywords into
+the other.
 
 ## Deep Mining Categories
 
@@ -120,6 +129,29 @@ Pick 3-4 per deep run:
 | Creative/Media | Writing, design, video editing, asset management, publishing, creator admin | Creator forums, software reviews, paid manual services |
 | Business Workflow | Quotations, customer records, inspection reports, contracts, data entry, migrations | Procurement, service marketplaces, ops forums, repeated manual cost |
 | AI/Automation | Tool cost, model migration, privacy, reliability, team governance, AI workflow handoff | Pricing complaints, workflow failures, local/offline asks, team usage posts |
+
+## Dead Ends (verified 2026-07)
+
+Do not spend rounds on these; the wall is the platform, not the query. Re-verify
+only if access conditions visibly change.
+
+| Channel | Why not |
+| --- | --- |
+| Quora | 403 anti-bot wall on question pages |
+| Etsy | CAPTCHA even through Jina; needs paid scraper |
+| Amazon reviews | Heavy anti-bot; use HuggingFace review datasets for cold-start instead |
+| Salesforce AppExchange | Consent-wall shell; low ROI vs Atlassian's open API |
+| Facebook Groups / Discord / Skool | Login-walled or private |
+| Figma Community | Reviews/comments do not render; install counts are direction only |
+| 知乎 (no login) | Security CAPTCHA even via Jina; needs login cookie |
+| 京东问答/评论 | 「京东验证·请登录」risk-control wall |
+| NGA / 一亩三分地 | 403, forced login |
+| 百度贴吧 direct | Slider CAPTCHA; RSSHub route only |
+| 百度知道 | Empty returns + SEO spam, weak first-hand pain |
+| 即刻 / 酷安 web | Login wall / marketing shell; RSSHub routes only |
+| Linux.do | Cloudflare challenge; lower signal density than 掘金/电鸭 anyway |
+| 百度指数 / 巨量算数 / 微信指数 | Login-walled, scale curves only — validation, never discovery |
+| 公众号第三方索引 | 搜狗微信 lags months + CAPTCHA (lead only); 新榜/西瓜 are paid | 
 
 ## Stop Rules
 

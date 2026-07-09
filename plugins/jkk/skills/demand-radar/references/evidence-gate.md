@@ -24,6 +24,14 @@ Every accepted record must pass all hard gates. If unsure, reject or park.
 A keyword hit, semantic-search result, trend mention, or model summary passes no
 gate by itself.
 
+## Recency Rule
+
+Evidence published more than 18 months ago is stale by default: the pain may be
+solved or the platform landscape changed. Accept it only with recent recurrence
+— new comments on the thread, a newer post describing the same job, or a
+cross-source match within 18 months. Otherwise park it, and record the
+recurrence URL in `佐证链接` when it exists.
+
 ## Third-Party Data Rule
 
 Downloads, ratings, rankings, stars, traffic estimates, launch lists, trend
@@ -47,6 +55,10 @@ Reject immediately when the record is mainly:
 - SEO article, advertorial, affiliate list, or platform-generated summary.
 - Future-only intent: "I would use/pay" without past behavior or commitment.
 - Unreadable source, missing URL, or copied text that cannot be traced.
+
+An exclusion applies to the post, not its comment section: before dropping a
+high-engagement post on a one-vote exclusion, scan its top comments — a comment
+can still pass the gate as its own row.
 
 ## Comment-Derived Signals
 
@@ -144,10 +156,22 @@ Better — same source, idiomatic:
 我试过好几个习惯打卡 App，但每次都坚持不到一周就放弃了。
 ```
 
-## Rejected List
+## Rejected And Parked Lists
 
 Keep rejected candidates in this shape during each run:
 
 ```json
 {"title":"...","url":"...","source":"...","reason":"产品 bug，不是需求信号"}
 ```
+
+Park is for real-looking demand that misses exactly one gate (usually signal,
+recency, or actor detail) — not a soft reject. Save parked candidates to
+`/tmp/demand-radar-parked.json`:
+
+```json
+{"title":"...","url":"...","source":"...","park_reason":"证据超18个月，未见近期复现"}
+```
+
+Deep mining runs read the parked list first and try to complete the missing
+gate (find recurrence, read more comments, locate the actor) before opening new
+sources.
