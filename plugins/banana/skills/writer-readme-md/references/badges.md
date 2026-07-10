@@ -33,7 +33,10 @@ review report if it matters.
 ## Placement
 
 - Put badges near the title or centered header.
-- Use 0-5 badges for most projects.
+- Use 0-5 badges for most projects. The badge-wall register (10+ badges grouped
+  into rows with `<br/>`) is legitimate only as part of the full
+  community-product style — see Two Legitimate Styles in
+  `references/presentation.md`.
 - Prefer useful operational badges over decorative badges.
 - Keep style consistent.
 

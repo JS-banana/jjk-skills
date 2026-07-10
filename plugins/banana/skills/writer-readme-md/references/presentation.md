@@ -28,12 +28,69 @@ Rules:
 
 - Order is logo → title → tagline → badges → nav links. Omit any missing piece
   rather than filling it with an invented asset.
-- Nav links point only to sections and files that exist.
+- Nav links point only to sections and files that exist. A language switcher
+  (see Bilingual README) joins this row with the same `·` separators.
 - Use a plain Markdown H1 instead when the repo is internal, sparse, or has no
   logo; a centered header on an empty project reads as overcompensation.
 - Registry pages (npm, PyPI, crates.io) sanitize or ignore some HTML, so keep
   the project name and value proposition readable as plain text even inside an
   HTML header, and never put critical facts only in HTML attributes.
+
+## Two Legitimate Styles
+
+A survey of 20 well-known repositories (2026-07, summarized in this repo's
+`docs/research/`) shows two coherent registers; pick one and stay consistent
+rather than mixing halves of each:
+
+- **Engineering restraint** (the mainstream, and the default): plain or lightly
+  centered header, 0-5 badges, no growth widgets. shadcn/ui's entire README is
+  17 lines with one hero image; ripgrep leads with plain text. Restraint at
+  high star counts reads as confidence.
+- **Community product** (dify, lobe-chat): grouped badge wall split into rows
+  with `<br/>`, star history chart, contributors wall, language switcher, and
+  emoji on every major heading — all or none. Badge-heavy files stay editable
+  only with reference-style links (`[![][shield]][link]` with definitions at
+  the bottom of the file), and long ones add `<a name="readme-top"></a>` plus
+  back-to-top links.
+
+Choose community-product style only when the project actually courts a
+community (open-source product, plugin ecosystem, self-host audience). Default
+to restraint.
+
+## Logo Sourcing
+
+- Prefer an existing asset, in this order: files already in the repo
+  (`docs/assets/`, `public/`, `.github/`), the project site's own CDN, the
+  org/user avatar. In the survey, every logo was an existing brand asset —
+  none were invented for the README.
+- No logo is a respectable choice: use a plain H1, never a placeholder image.
+- Generating a logo is a user decision. Offer it; on yes, produce a simple SVG
+  wordmark, commit it to the repo (for example `docs/assets/logo.svg`), and
+  reference it locally. Do not hotlink generated images from external hosts.
+
+## Community and Growth Widgets
+
+These widgets claim traction. Use them only on public repos where community
+growth is part of the pitch; on a young or internal repo they advertise the
+absence of what they measure.
+
+- Star history chart: place it in the community/contributing section near the
+  bottom, dark-mode aware, collapsed in `<details>` when the section is long.
+  Requires a public repo and the real owner/repo substituted:
+
+```html
+<picture>
+  <source media="(prefers-color-scheme: dark)"
+          srcset="https://api.star-history.com/svg?repos=owner-name/repo-name&type=Date&theme=dark">
+  <img src="https://api.star-history.com/svg?repos=owner-name/repo-name&type=Date"
+       alt="Star history chart" width="100%">
+</picture>
+```
+
+- Contributors wall (`https://contrib.rocks/image?repo=owner-name/repo-name`)
+  only when there is a real multi-contributor base to show.
+- Sponsor sections only when sponsorship actually exists (GitHub Sponsors or
+  OpenCollective evidence), per the no-invented-claims rule in `method.md`.
 
 ## Media
 
