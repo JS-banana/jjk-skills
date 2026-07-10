@@ -92,9 +92,7 @@ boundaries only when useful.
 
 ## Header Style
 
-A centered HTML header is acceptable for public GitHub READMEs, especially when
-a logo or visual identity exists. Do not force it for sparse internal repos,
-plain libraries, or docs where a standard Markdown H1 is clearer.
-
-Badge count should usually be 0-5. More badges are only justified for mature
-public projects.
+See `references/presentation.md` for first-screen anatomy, media, GitHub
+building blocks, and layout rhythm. Short version: centered HTML header only
+for public repos with visual identity; plain Markdown H1 for sparse or
+internal repos; 0-5 badges.

@@ -19,6 +19,17 @@ evidence.
 When evidence is missing, omit the badge and mention the missing evidence in the
 review report if it matters.
 
+## Style Consistency
+
+- Pick one shields.io `style` for the whole README — `flat` (default),
+  `flat-square`, or `for-the-badge` — and never mix styles in one file.
+- `for-the-badge` only suits a centered hero header; badges inside body
+  sections stay `flat`/`flat-square`.
+- Add `logo=` only for recognizable brands, and keep `logoColor` legible
+  against the badge color.
+- Color carries meaning: green for passing/stable, blue/gray for neutral
+  information, red only for real failure states — never decoratively.
+
 ## Placement
 
 - Put badges near the title or centered header.

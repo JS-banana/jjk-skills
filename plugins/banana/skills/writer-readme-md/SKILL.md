@@ -2,17 +2,24 @@
 name: writer-readme-md
 description: >
   Use when the user wants to create, rewrite, audit, or improve a project
-  README.md, GitHub README, project documentation landing page, README
-  or bilingual README. Trigger on README requests, "帮我写 README",
-  "生成项目文档", "README 太烂了", "write project docs", or
-  /writer-readme-md.
+  README.md, GitHub README, project documentation landing page, or a
+  bilingual README. Trigger on README requests, "帮我写 README",
+  "生成项目文档", "README 太烂了", "把 README 弄好看点", "write project
+  docs", or /writer-readme-md. Not for agent context files such as
+  AGENTS.md or CLAUDE.md — use writer-context-md for those.
 ---
 
 # Writer README MD
 
-Create README files that are grounded in local project evidence. Treat the
-README as the project's front door: it should explain what the project is, how
-to try it, and what claims are actually supported by the repository.
+Create README files that are grounded in local project evidence.
+
+The reader is a person who gives the page a few seconds before deciding to
+stay or leave. Treat the README as the project's front door: it must explain
+what the project is, how to try it, and what claims the repository actually
+supports — and it must look deliberate, because visual hierarchy is how humans
+scan. This is the opposite optimization from agent context files
+(writer-context-md): those minimize tokens for a machine; a README spends
+words and layout to earn a human's trust.
 
 ## Load Rules
 
@@ -20,6 +27,9 @@ to try it, and what claims are actually supported by the repository.
   `references/review-rubric.md` before drafting.
 - After scanning the repository, read `references/patterns.md` to choose the
   README shape guidance and section priorities.
+- Read `references/presentation.md` when creating or rewriting a README, or
+  when the task involves layout, visual polish, badges, media, or bilingual
+  docs.
 - Read `references/badges.md` only when adding or reviewing badges.
 - Read `references/examples.md` only after choosing the target shape.
 - For tiny edits under 10 lines, use this file and the existing README only

@@ -58,7 +58,9 @@ as true.
 
 Match the repository's dominant documentation language. If source comments and
 existing docs are mixed, follow the existing README or user preference. For
-bilingual output, keep the two files structurally aligned and self-contained.
+bilingual output, follow the Bilingual README section in
+`references/presentation.md` for file naming, the language switcher line, and
+keeping both files aligned and self-contained.
 
 ## Confirmation Gate
 

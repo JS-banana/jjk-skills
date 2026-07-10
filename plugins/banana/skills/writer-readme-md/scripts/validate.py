@@ -12,6 +12,7 @@ from pathlib import Path
 REQUIRED_REFERENCES = [
     "references/method.md",
     "references/patterns.md",
+    "references/presentation.md",
     "references/review-rubric.md",
     "references/badges.md",
     "references/examples.md",
@@ -261,6 +262,10 @@ def validate_readme(readme: Path) -> list[str]:
 
     if re.search(r"img\.shields\.io/.+(\{|\}|OWNER|REPO|user/repo)", content):
         errors.append("badge contains unresolved owner/repo placeholder")
+
+    styles = set(re.findall(r"img\.shields\.io/[^)\s\"']*[?&]style=([a-z-]+)", content))
+    if len(styles) > 1:
+        errors.append("mixed shields.io badge styles: " + ", ".join(sorted(styles)))
 
     return errors
 
