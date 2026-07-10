@@ -183,7 +183,13 @@ def validate_skill(skill_dir: Path) -> list[str]:
 
 def markdown_headings(content: str) -> list[tuple[int, str]]:
     headings: list[tuple[int, str]] = []
+    in_block = False
     for line in content.splitlines():
+        if re.match(r"^```", line):
+            in_block = not in_block
+            continue
+        if in_block:
+            continue
         match = re.match(r"^(#{1,6})\s+(.+?)\s*$", line)
         if match:
             headings.append((len(match.group(1)), match.group(2)))
