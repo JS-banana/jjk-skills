@@ -38,9 +38,9 @@ Rules:
 
 ## Two Legitimate Styles
 
-A survey of 20 well-known repositories (2026-07, summarized in this repo's
-`docs/research/`) shows two coherent registers; pick one and stay consistent
-rather than mixing halves of each:
+A 2026-07 survey of 20 well-known repositories (react, vite, fastapi, ripgrep,
+shadcn/ui, ant-design, dify, lobe-chat, and similar) shows two coherent
+registers; pick one and stay consistent rather than mixing halves of each:
 
 - **Engineering restraint** (the mainstream, and the default): plain or lightly
   centered header, 0-5 badges, no growth widgets. shadcn/ui's entire README is
