@@ -108,15 +108,23 @@ change no behavior, and "make sure the code works" became a concrete command.
 ## Multi-Tool Adapter
 
 Use when `AGENTS.md` is canonical but another tool expects a specific file.
+Default for Claude Code — a one-line import adapter that inlines the canonical
+file at load time, so only AGENTS.md is ever maintained:
 
 ```md
-# CLAUDE.md
+This repository uses AGENTS.md as the canonical agent context file; this file
+only adapts it for Claude Code.
 
-This repository uses `AGENTS.md` as the canonical agent instruction file.
-Read `AGENTS.md` first. Only use this file for Claude-specific notes below.
+@AGENTS.md
+```
+
+Add Claude-specific content only when it really exists:
+
+```md
+@AGENTS.md
 
 ## Claude-Specific Notes
-- [Add only product-specific behavior here.]
+- [Only product-specific behavior here, e.g. skill or hook interactions.]
 ```
 
 ## Review Finding Format

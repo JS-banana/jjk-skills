@@ -141,7 +141,11 @@ Default to one canonical source.
 
 - Use `AGENTS.md` as the canonical cross-tool context when the repo supports
   multiple agents.
-- Use `CLAUDE.md` as a symlink or short adapter if Claude Code expects it.
+- For Claude Code, add a `CLAUDE.md` whose content is a one-line `@AGENTS.md`
+  import: it inlines the canonical file at load time. A prose pointer like
+  "read AGENTS.md first" is weaker — it costs an extra action and is not
+  guaranteed to be followed. Note that Claude Code does not load `AGENTS.md`
+  by itself, so an AGENTS.md-only repo silently loses Claude Code coverage.
 - Use Cursor or Copilot-specific files only for product-specific scoping,
   frontmatter, or activation behavior.
 - Avoid maintaining parallel copies with similar content.
