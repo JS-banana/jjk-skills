@@ -17,6 +17,25 @@ answer only what the agent cannot reliably infer from the repository:
 It is not a README, architecture guide, changelog, onboarding manual, or style
 guide for humans.
 
+## Cost Model
+
+Context files are loaded into every session. Each line has a recurring token
+cost and competes with task context, so a rule earns its place only by
+preventing a likely mistake or saving repeated discovery. This is the core
+difference from human docs: a README is read once by a person who needs
+persuasion and visual hierarchy; a context file is read every run by a machine
+that needs facts it cannot infer.
+
+Apply the deletion test line by line: if removing the line would not change how
+the agent behaves, delete it.
+
+## Language
+
+Match the language of the repository's existing context files and team
+communication. If the team works in Chinese, write the context file in Chinese;
+commands, paths, and code identifiers stay verbatim. Do not mix languages
+within one file without reason.
+
 ## Source Discovery
 
 Read local source-of-truth files before writing:
@@ -169,6 +188,21 @@ Verification:
 ```
 
 ## Platform Notes
+
+Claude Code:
+
+- Loads user-scope `~/.claude/CLAUDE.md` plus `CLAUDE.md` files found from the
+  project root; nested `CLAUDE.md` files in subdirectories load when the agent
+  works in that directory, and closer files take precedence.
+- `@path/to/file.md` lines inside CLAUDE.md import other files at load time
+  (max depth 5; imports inside code spans and code blocks are ignored). Prefer
+  imports over one oversized file.
+- Rule files under `.claude/rules/` (user or project scope) load as additional
+  persistent instructions; use them for modular topic rules.
+- `/init` bootstraps a CLAUDE.md draft; treat the output as a draft that still
+  needs human pruning, per the auto-generation caution in `evidence.md`.
+- Product behavior changes quickly; verify scope names and limits against
+  current Claude Code docs before stating them to users.
 
 Codex:
 

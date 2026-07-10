@@ -2,6 +2,48 @@
 
 Use these as reusable shapes, not templates to copy blindly.
 
+## Before / After Rewrite
+
+Before — every line fails the deletion test:
+
+```md
+# CLAUDE.md
+
+This project is a web application built with modern technologies. The codebase
+is organized as follows:
+- src/ — source code
+- tests/ — tests
+- docs/ — documentation
+
+Please write clean, maintainable code and follow best practices. Be careful
+when modifying database-related code. Always make sure the code works before
+committing. We use React for the frontend.
+```
+
+After — every surviving line names a command, file, or boundary the agent
+cannot infer:
+
+```md
+# CLAUDE.md
+
+## Stack
+- React 19 / Vite 6 / pnpm 9 / PostgreSQL 16.
+
+## Commands
+- Test one file: `pnpm vitest run path/to/file.test.ts`
+- Before finishing: `pnpm lint && pnpm typecheck && pnpm test`
+
+## Non-Obvious Patterns
+- DB access only through `src/db/queries.ts`; raw SQL elsewhere fails review.
+
+## Boundaries
+### Ask First
+- Edit already-applied migrations in `migrations/`.
+```
+
+Why: the directory listing is discoverable, "best practices" and "be careful"
+change no behavior, and "make sure the code works" became a concrete command.
+
 ## Minimal Root AGENTS.md
 
 ```md

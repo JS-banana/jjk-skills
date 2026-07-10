@@ -36,6 +36,26 @@ Checked: 2026-06-09
   Source: OpenAI Codex docs.
   Boundary: Codex-specific; refresh before hard-coding in user docs.
 
+### Claude Code Discovery
+
+- Claim: Claude Code loads user-scope `~/.claude/CLAUDE.md` and project-tree
+  `CLAUDE.md` files; nested files load when work happens in their directory.
+  Strength: Strong.
+  Source: Anthropic Claude Code memory docs.
+  Boundary: Product behavior changes fast; refresh for exact scope names.
+
+- Claim: CLAUDE.md supports `@path` import lines that inline other files, with
+  a maximum depth of 5; imports inside code spans/blocks are not evaluated.
+  Strength: Strong.
+  Source: Anthropic Claude Code memory docs.
+  Boundary: Claude-specific syntax; do not use it in AGENTS.md for other tools.
+
+- Claim: Rule files under `.claude/rules/` load as additional persistent
+  instructions at user or project scope.
+  Strength: Medium.
+  Source: Anthropic docs and observed product behavior.
+  Boundary: Newer surface; verify against current docs before citing limits.
+
 ### AGENTS.md Format
 
 - Claim: AGENTS.md is an open Markdown format for agent instructions, not a
@@ -131,6 +151,8 @@ Avoid saying:
 
 ## Source List
 
+- Anthropic Claude Code memory docs:
+  https://docs.claude.com/en/docs/claude-code/memory
 - OpenAI Codex docs:
   https://developers.openai.com/codex/guides/agents-md
 - AGENTS.md official site:

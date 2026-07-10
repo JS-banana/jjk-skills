@@ -6,14 +6,23 @@ description: >
   guidance. Use when the user asks to create, optimize, review, consolidate,
   split, or update persistent instructions for Codex, Claude Code, Cursor,
   GitHub Copilot, or other coding agents; when AGENTS.md/CLAUDE.md is too long,
-  stale, vague, or causing repeated agent mistakes.
+  stale, vague, or causing repeated agent mistakes. Trigger on "帮我写
+  CLAUDE.md", "优化 AGENTS.md", "上下文文件怎么写", "给仓库加 agent 规则", or
+  /writer-context-md. Not for human-facing README or project docs — use
+  writer-readme-md for those.
 ---
 
 # Writer Context MD
 
-Create high-signal persistent context for coding agents. Optimize for minimal,
-non-inferable guidance: exact commands, unusual decisions, boundaries, and
-verification rules that the agent cannot cheaply discover.
+Create high-signal persistent context for coding agents.
+
+The reader is a machine, not a person. Every line is re-read and paid for in
+tokens on every session, so optimize for density of non-inferable facts: exact
+commands, unusual decisions, boundaries, and verification gates the agent
+cannot cheaply discover. Polish, marketing tone, and completeness for its own
+sake are liabilities here — that is README territory (writer-readme-md).
+Apply the deletion test to every line: if removing it would not change agent
+behavior, remove it.
 
 ## Load Rules
 
