@@ -1,7 +1,7 @@
 # AI 活动雷达 — 飞书表字段增补建议
 
 > 状态：**建议稿，未实施**。确认后再改表；改表后需同步更新
-> `plugins/jkk/skills/ai-vendor-campaign-radar/references/bitable-api-patterns.md`
+> `plugins/banana/skills/ai-vendor-campaign-radar/references/bitable-api-patterns.md`
 > 和 `scripts/campaign_bitable_sync.py` 的字段默认值。
 >
 > 背景：表 `tblYhMRh3fJ0FDfW` 现有 22 字段；网站（panion-works/ai-hackathons）

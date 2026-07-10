@@ -114,7 +114,7 @@ python3 scripts/campaign_bitable_sync.py \
 
 In Hermes, the deployed script may live at
 `~/.hermes/scripts/campaign_bitable_sync.py`. In this repo, use
-`plugins/jkk/skills/ai-vendor-campaign-radar/scripts/campaign_bitable_sync.py`.
+`plugins/banana/skills/ai-vendor-campaign-radar/scripts/campaign_bitable_sync.py`.
 Both paths require `--base-token` or `AI_CAMPAIGN_BASE_TOKEN`; `--table-id` or
 `AI_CAMPAIGN_TABLE_ID` is only needed when overriding the bundled default table.
 

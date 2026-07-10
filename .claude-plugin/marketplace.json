@@ -1,5 +1,5 @@
 {
-  "name": "jkk-skills",
+  "name": "banana-skills",
   "owner": {
     "name": "Sunss"
   },
@@ -9,9 +9,9 @@
   },
   "plugins": [
     {
-      "name": "jkk",
-      "source": "./plugins/jkk",
-      "description": "Collection of writing and research skills"
+      "name": "banana",
+      "source": "./plugins/banana",
+      "description": "Skills for AI campaign/demand radars, asset publishing, and documentation writing"
     }
   ]
 }

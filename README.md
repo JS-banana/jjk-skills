@@ -1,17 +1,35 @@
 <div align="center">
-  <h1>🛠️ jkk-skills</h1>
-  <p><b>小帅的技能库</b></p>
+  <h1>🍌 banana-skills</h1>
+  <p><b>小帅的 AI 资产库：skills 插件 + prompts 沉淀</b></p>
 </div>
+
+## 🗂️ 仓库结构
+
+| 目录 | 内容 |
+|------|------|
+| `plugins/banana/` | 可安装的 Claude Code 插件（技能见下方列表） |
+| `prompts/` | 收藏的提示词与 AI 使用沉淀（[索引](prompts/README.md)） |
+| `docs/` | 技能的 specs / ADR / 研究资料 |
 
 ## 📦 安装
 
 ```bash
-# 添加市场
-/plugin marketplace add JS-banana/jjk-skills
+# 安装全部技能
+npx skills add JS-banana/banana-skills
 
-# 安装插件
-/plugin install jkk
+# 或按需安装单个技能
+npx skills add JS-banana/banana-skills --skill demand-radar
 ```
+
+<details>
+<summary>Claude Code 插件方式安装</summary>
+
+```bash
+/plugin marketplace add JS-banana/banana-skills
+/plugin install banana
+```
+
+</details>
 
 ---
 

@@ -3,8 +3,8 @@
 - 状态：Accepted
 - 日期：2026-07-08
 - 相关：`0001-simplified-schema.md`、
-  `plugins/jkk/skills/demand-radar/references/feishu-schema.md`、
-  `plugins/jkk/skills/demand-radar/scripts/run.py`
+  `plugins/banana/skills/demand-radar/references/feishu-schema.md`、
+  `plugins/banana/skills/demand-radar/scripts/run.py`
 
 ## 背景
 

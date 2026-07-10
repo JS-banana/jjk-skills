@@ -3,8 +3,8 @@
 - 状态：Accepted
 - 日期：2026-06-29
 - 相关：`../design.md`（已废弃的富 schema 方案）、`../requirements.md` §1/§6、
-  `plugins/jkk/skills/demand-radar/references/feishu-schema.md`、
-  `plugins/jkk/skills/demand-radar/scripts/run.py`
+  `plugins/banana/skills/demand-radar/references/feishu-schema.md`、
+  `plugins/banana/skills/demand-radar/scripts/run.py`
 
 ## 背景
 
