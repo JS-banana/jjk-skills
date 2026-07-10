@@ -95,6 +95,11 @@ exceptional.
      URLs — Devpost, lablab, and vendor sites overlap the most).
    - Score `推荐指数` from 1-5 by averaging reward value, urgency, and official
      confirmation. Difficulty stays separate in `难度评级`.
+   - Never drop a candidate silently. A candidate set aside for scan budget,
+     assumed expiry, pagination limits, or extraction failure is not a
+     rejection: track it for the 未覆盖 section in the output. Assumed expiry
+     alone never justifies dropping — a post's publish date is not the
+     campaign's deadline; verify the deadline or list the candidate as 未覆盖.
    - Completion: every kept and rejected candidate has a one-line reason.
 
 5. Persist.
@@ -109,9 +114,12 @@ exceptional.
      updated or the reason is reported.
 
 6. Output.
-   - If there are no new records and no P0/P1 reminders, output exactly
-     `[SILENT]`.
-   - Otherwise output compact cards:
+   - If there are no new records, no P0/P1 reminders, and no 未覆盖 entries,
+     output exactly `[SILENT]`.
+   - Otherwise output compact cards, then a `【未覆盖】` section listing every
+     candidate or source skipped for budget, unverified expiry assumption, or
+     extraction failure, one line each with the reason. Planned source rotation
+     per `source-registry.md` is not 未覆盖. Omit the section when empty:
 
 ```markdown
 【厂商】...
@@ -155,4 +163,6 @@ difficulty + low score is `跳过`.
 - `references/cron-architecture.md`: why Hermes cron uses agent-direct scans.
 - `references/mcp-enhancement.md`: optional Exa/Firecrawl/Tavily MCP setup.
 - `scripts/parse_agentdeadlines.py`: parse downloaded AgentDeadlines HTML.
+- `scripts/parse_competehub.py`: parse downloaded CompeteHub monthly page HTML;
+  the only working curl path for CompeteHub data.
 - `scripts/campaign_bitable_sync.py`: deterministic Feishu Base write path.
