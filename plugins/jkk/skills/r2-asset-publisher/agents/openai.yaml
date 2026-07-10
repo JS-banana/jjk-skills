@@ -1,0 +1,4 @@
+interface:
+  display_name: "R2 Asset Publisher"
+  short_description: "Publish compressed image assets to Cloudflare R2"
+  default_prompt: "Use $r2-asset-publisher to compress local images, publish them to Cloudflare R2, and rewrite Markdown image URLs."
