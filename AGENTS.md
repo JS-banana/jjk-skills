@@ -25,6 +25,8 @@
   skill 内 `scripts/run.py` + `references/feishu-schema.md` 应镜像活库。
   `docs/demand-radar/design.md` 已废弃且枚举值有错——任何 schema 改动前先查活库，别信它。
 - 每个 skill 的领域语言和运行上下文以该 skill 目录下的 `CONTEXT.md` 为准。
+- skill 的规范类内容（写作规则、最佳实践）需有实证来源，调研素材存 `docs/research/`；
+  但 skill 文件内不得引用该目录（见上方跨界引用规则）。
 - 雷达类 skill 写入飞书只走既定通道（Hermes 机器人或 lark-cli），不要新写保存逻辑。
 
 ## 边界
